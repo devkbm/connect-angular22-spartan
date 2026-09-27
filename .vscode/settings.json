@@ -1,0 +1,67 @@
+{
+  // 1. Enable/Disable the extension
+  "angular.enable": true,
+
+  // 2. Standalone components by default
+  "angular.components.standalone": true,
+  "angular.components.style": "css",    // 'css', 'less', 'sass', 'styl'
+
+  // 3. Naming mode (Legacy vs. Angular 20+)
+  "angular.fileGenerator.omitSuffix": true,   // true for Angular 20+ (omit .component.ts, .service.ts, etc.)
+  "angular.fileGenerator.typeSeparator": "-",  // '-' for dash-separated; '.' for legacy
+  "angular.fileGenerator.skipFolderConfirmation": false, // true to skip folder-confirmation dialogs
+
+  // 4. Filters for "List Files"
+  "angular.files.include": ["ts"],
+  "angular.files.exclude": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/.*/**"
+  ],
+  "angular.files.watch": ["modules", "components", "services"], // folders to scan
+  "angular.files.showPath": true, // show full path in list
+
+  // 5. Working directory for CLI commands (monorepo)
+  //"angular.terminal.cwd": "packages/my-angular-app", // adjust to your structure
+  //"angular.fileGenerator.useRootWorkspace": false, // Use the root workspace folder as the current working directory to resolve relative paths
+
+  // 6. Custom CLI commands
+  "angular.submenu.customCommands": [
+    {
+    "name": "Custom Component",
+    "command": "ng g c",
+    "args": "--standalone true --inline-style true --inline-template true --skip-tests true --flat true"
+    },
+    {
+      "name": "Feature Module (OnPush + Routing)",
+      "command": "ng g m",
+      "args": "--routing --flat --change-detection OnPush"
+    },
+  ],
+
+  // 7. Custom templates
+  "angular.submenu.templates": [
+    {
+      "name": "Corporate Component",
+      "description": "Component with header + basic logging",
+      "type": "component",
+      "template": [
+        "/* Company XYZ - Confidential */",
+        "import { Component } from '@angular/core';",
+        "import { LoggingService } from 'src/app/shared/logging.service';",
+        "@Component({",
+        "  selector: 'app-{{entityName}}',",
+        "  standalone: true,",
+        "  imports: [CommonModule],",
+        "  templateUrl: './{{entityName}}.component.html',",
+        "  styleUrls: ['./{{entityName}}.component.{{style}}'],",
+        "})",
+        "export class {{ComponentName}}Component {",
+        "  constructor(private logger: LoggingService) {",
+        "    this.logger.log('{{ComponentName}} initialized');",
+        "  }",
+        "}"
+      ]
+    }
+  ]
+}

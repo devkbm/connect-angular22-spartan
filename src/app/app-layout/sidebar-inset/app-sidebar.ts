@@ -60,7 +60,7 @@ import { Router } from '@angular/router';
           </hlm-combobox>
           -->
 
-          <hlm-select [itemToString]="itemToString" [(value)]="menuGroupInfo().selectedId" (valueChange)="moveToMenuGroupUrl($event)">
+          <hlm-select #menuGroup [itemToString]="itemToString" [(value)]="menuGroupInfo().selectedId" (valueChange)="moveToMenuGroupUrl($event)">
             <hlm-select-trigger class="w-56">
               <hlm-select-value placeholder="Select a fruit" />
             </hlm-select-trigger>
@@ -110,9 +110,15 @@ export class AppSidebarInset {
     const stringMenuGroupList = sessionStorage.getItem('menuGroupList') as string;
     this.menuGroupInfo.update(current => ({...current, list: JSON.parse(stringMenuGroupList)}));
 
+    /**
+     * 1. 최종 메뉴 그룹을 선택(세션)
+     * 2. 세션 정보 없을 경우 첫번쩨 메뉴 그룹 선택
+     */
     const sessionMenuGroup  = sessionStorage.getItem('selectedMenuGroup');
     if (sessionMenuGroup) {
       this.menuGroupInfo.update(current => ({...current, selectedId: sessionMenuGroup}));
+    } else {
+      this.menuGroupInfo.update(current => ({...current, selectedId: this.menuGroupInfo().list[0].menuGroupCode}));
     }
 
   }

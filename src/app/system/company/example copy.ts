@@ -7,9 +7,6 @@ import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
 import { HlmInputImports } from '@spartan-ng/helm/input';
 import { HlmTableImports } from '@spartan-ng/helm/table';
 import { hlmMuted } from '@spartan-ng/helm/typography';
-
-import { formatDate } from '@angular/common';
-
 import {
 	columnFilteringFeature,
 	type ColumnFiltersState,
@@ -31,10 +28,16 @@ import {
 	type SortingState,
 	tableFeatures,
 } from '@tanstack/angular-table';
-
 import { ActionDropdown } from './action-dropdown';
 import { TableHeadSelection, TableRowSelection } from './selection-column';
 import { TableHeadSortButton } from './sort-header-button';
+
+export type Payment = {
+	id: string;
+	amount: number;
+	status: 'pending' | 'processing' | 'success' | 'failed';
+	email: string;
+};
 
 const features = tableFeatures({
 	columnFilteringFeature,
@@ -52,6 +55,7 @@ const features = tableFeatures({
 export type DataTableFeatures = typeof features;
 
 const columnHelper = createColumnHelper<DataTableFeatures, Payment>();
+
 const columns = columnHelper.columns([
 	columnHelper.display({
 		id: 'select',
@@ -59,41 +63,28 @@ const columns = columnHelper.columns([
 		cell: () => TableRowSelection,
 		enableHiding: false,
 	}),
-	columnHelper.accessor('companyCode', {
-		id: 'companyCode',
-		header: '회사코드',
+	columnHelper.accessor('status', {
+		id: 'status',
+		header: 'Status',
 		cell: (info) => `<span class="capitalize">${info.getValue<string>()}</span>`,
 	}),
-	columnHelper.accessor('companyName', {
-		id: 'companyName',
-		header: '회사명',
-		cell: (info) => `<span class="capitalize">${info.getValue<string>()}</span>`,
+	columnHelper.accessor('email', {
+		id: 'email',
+		header: () => TableHeadSortButton,
+		cell: (info) => `<div class="lowercase">${info.getValue<string>()}</div>`,
 	}),
-  columnHelper.accessor('businessRegistrationNumber', {
-		id: 'businessRegistrationNumber',
-		header: '사업자등록번호',
-		cell: (info) => `<span class="capitalize">${info.getValue<string>()}</span>`,
-	}),
-  columnHelper.accessor('coporationNumber', {
-		id: 'coporationNumber',
-		header: '법인번호',
-		cell: (info) => `<span class="capitalize">${info.getValue<string>()}</span>`,
-	}),
-  columnHelper.accessor('nameOfRepresentative', {
-		id: 'nameOfRepresentative',
-		header: '대표자',
-		cell: (info) => `<span class="capitalize">${info.getValue<string>()}</span>`,
-	}),
-  columnHelper.accessor('establishmentDate', {
-		id: 'establishmentDate',
-		header: '설립일',
-		//cell: (info) => `<span>${formatDate(info.getValue<string>(),'YYYYMMdd','ko-kr')}</span>`,
-    cell: (info) => {formatDate(info.getValue<string>(),'YYYYMMdd','ko-kr')}
-	}),
-  columnHelper.accessor('establishmentDate', {
-		id: 'establishmentDate2',
-		header: '설립일2',
-		cell: (info) => `<span class="capitalize">${info.getValue<string>()}</span>`,
+	columnHelper.accessor('amount', {
+		id: 'amount',
+		header: '<div class="text-right">Amount</div>',
+		cell: (info) => {
+			const amount = parseFloat(info.getValue<string>());
+			const formatted = new Intl.NumberFormat('en-US', {
+				style: 'currency',
+				currency: 'USD',
+			}).format(amount);
+
+			return `<div class="text-right font-medium">${formatted}</div>`;
+		},
 	}),
 	columnHelper.display({
 		id: 'actions',
@@ -101,53 +92,6 @@ const columns = columnHelper.columns([
 		enableHiding: false,
 	}),
 ]);
-
-export type Payment = {
-  /**
-   * 회사코드
-   */
-	companyCode: string;
-  /**
-   * 회사명
-   */
-	companyName: string;
-  /**
-   * 사업자등록번호
-   */
-  businessRegistrationNumber: string;
-	/**
-   * 법인번호
-   */
-  coporationNumber: string | null;
-  /**
-   * 대표자
-   */
-  nameOfRepresentative: string | null;
-  /**
-   * 설립일
-   */
-  establishmentDate: Date | null;
-};
-
-const PAYMENT_DATA: Payment[] = [
-	{
-    companyCode: 'm5gr84i9',
-    companyName: '316',
-    businessRegistrationNumber: 'success',
-    coporationNumber: 'ken99@yahoo.com',
-    nameOfRepresentative: null,
-    establishmentDate: new Date("2026-10-01")
-  },
-	{
-    companyCode: '3u1reuv4',
-    companyName: '316',
-    businessRegistrationNumber: 'success',
-    coporationNumber: 'ken99@yahoo.com',
-    nameOfRepresentative: null,
-    establishmentDate: null
-  },
-];
-
 
 @Component({
 	selector: 'spartan-data-table-preview',
@@ -189,7 +133,6 @@ const PAYMENT_DATA: Payment[] = [
 				</hlm-dropdown-menu>
 			</ng-template>
 		</div>
-
 		<div class="overflow-hidden rounded-md border">
 			<div hlmTableContainer>
 				<table hlmTable>
@@ -296,4 +239,35 @@ export class DataTablePreview {
 	}
 }
 
-
+const PAYMENT_DATA: Payment[] = [
+	{
+		id: 'm5gr84i9',
+		amount: 316,
+		status: 'success',
+		email: 'ken99@yahoo.com',
+	},
+	{
+		id: '3u1reuv4',
+		amount: 242,
+		status: 'success',
+		email: 'Abe45@gmail.com',
+	},
+	{
+		id: 'derv1ws0',
+		amount: 837,
+		status: 'processing',
+		email: 'Monserrat44@gmail.com',
+	},
+	{
+		id: '5kma53ae',
+		amount: 874,
+		status: 'success',
+		email: 'Silas22@gmail.com',
+	},
+	{
+		id: 'bhqecj4p',
+		amount: 721,
+		status: 'failed',
+		email: 'carmella@hotmail.com',
+	},
+];

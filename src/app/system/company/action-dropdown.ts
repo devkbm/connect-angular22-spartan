@@ -32,6 +32,7 @@ export class ActionDropdown {
 
 	copyPaymentId() {
 		const payment = this.row().original;
-		navigator.clipboard.writeText(payment.id);
+		//navigator.clipboard.writeText(payment.id);
+    //console.log(payment.id)
 	}
 }

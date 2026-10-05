@@ -30,7 +30,7 @@
     {
     "name": "Custom Component",
     "command": "ng g c",
-    "args": "--standalone true --inline-style true --inline-template true --skip-tests true --flat true"
+    "args": "--prefix  --standalone true --inline-style true --inline-template true --skip-tests true --flat true --export-default true"
     },
     {
       "name": "Feature Module (OnPush + Routing)",

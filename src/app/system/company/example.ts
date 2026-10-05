@@ -59,6 +59,14 @@ const columns = columnHelper.columns([
 		cell: () => TableRowSelection,
 		enableHiding: false,
 	}),
+  columnHelper.display({
+    id: 'rowNumber',
+    header: '#',
+    cell: ({ row }) => {
+      const displayIndex = row.getDisplayIndex()
+      return displayIndex === -1 ? '' : displayIndex + 1
+    }
+  }),
 	columnHelper.accessor('companyCode', {
 		id: 'companyCode',
 		header: '회사코드',
@@ -87,8 +95,8 @@ const columns = columnHelper.columns([
   columnHelper.accessor('establishmentDate', {
 		id: 'establishmentDate',
 		header: '설립일',
-		//cell: (info) => `<span>${formatDate(info.getValue<string>(),'YYYYMMdd','ko-kr')}</span>`,
-    cell: (info) => {formatDate(info.getValue<string>(),'YYYYMMdd','ko-kr')}
+		cell: (info) => `<span>${formatDate(info.getValue<string>(),'yyyy-MM-dd','en-us')}</span>`,
+    //cell: (info) => {return formatDate(info.getValue<string>(),'YYYYMMdd','ko-kr')}
 	}),
   columnHelper.accessor('establishmentDate', {
 		id: 'establishmentDate2',
@@ -136,7 +144,7 @@ const PAYMENT_DATA: Payment[] = [
     businessRegistrationNumber: 'success',
     coporationNumber: 'ken99@yahoo.com',
     nameOfRepresentative: null,
-    establishmentDate: new Date("2026-10-01")
+    establishmentDate: new Date('2026-10-01')
   },
 	{
     companyCode: '3u1reuv4',

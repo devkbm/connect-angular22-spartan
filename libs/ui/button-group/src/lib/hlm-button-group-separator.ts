@@ -1,11 +1,11 @@
 import { Directive } from '@angular/core';
-import { BrnSeparator, provideBrnSeparatorConfig } from '@spartan-ng/brain/separator';
+import { provideBrnSeparatorConfig } from '@spartan-ng/brain/separator';
 import { classes } from '@spartan-ng/helm/utils';
 
 @Directive({
   selector: '[hlmButtonGroupSeparator],hlm-button-group-separator',
   providers: [provideBrnSeparatorConfig({ orientation: 'vertical' })],
-  hostDirectives: [{ directive: BrnSeparator, inputs: ['orientation', 'decorative'] }],
+  //hostDirectives: [{ directive: BrnSeparator, inputs: ['orientation', 'decorative'] }],
   host: {
     'data-slot': 'button-group-separator',
   },

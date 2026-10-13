@@ -2,9 +2,9 @@ import { HttpHeaders } from '@angular/common/http';
 
 export function getAuthorizedHttpHeaders(): HttpHeaders {
   return new HttpHeaders()
-        .set('Content-Type', 'application/json')
-        .set('X-Requested-With', 'XMLHttpRequest')
-        .set('Authorization', sessionStorage.getItem('token') as string);
+    .set('Content-Type', 'application/json')
+    .set('X-Requested-With', 'XMLHttpRequest')
+    .set('Authorization', sessionStorage.getItem('token') as string);
 }
 
 export function getHttpOptions(params?: any) {
@@ -12,12 +12,12 @@ export function getHttpOptions(params?: any) {
     return {
       headers: getAuthorizedHttpHeaders(),
       withCredentials: true,
-      params: params
-    }
+      params: params,
+    };
   }
 
   return {
     headers: getAuthorizedHttpHeaders(),
-    withCredentials: true
-  }
+    withCredentials: true,
+  };
 }

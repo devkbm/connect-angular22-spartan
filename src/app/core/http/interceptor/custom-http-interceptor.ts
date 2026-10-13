@@ -1,19 +1,25 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpInterceptor, HttpHeaders, HttpRequest, HttpHandler, HttpEvent, HttpXsrfTokenExtractor } from '@angular/common/http';
+import {
+  HttpInterceptor,
+  HttpHeaders,
+  HttpRequest,
+  HttpHandler,
+  HttpEvent,
+  HttpXsrfTokenExtractor,
+} from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CustomHttpInterceptor implements HttpInterceptor {
-
   headerInfo?: HttpHeaders;
   exceptUrls: string[] = [
     //'http://175.114.176.195:8090/api/system/user/login',
     //'http://localhost:8090/api/system/user/login'     // 로그인페이지 url
-    '/api/system/user/login',                           // 로그인페이지 url
-    '/api/system/user/oauth2',                          // Oauth2 로그인
-    '/api/system/company'
+    '/api/system/user/login', // 로그인페이지 url
+    '/api/system/user/oauth2', // Oauth2 로그인
+    '/api/system/company',
   ];
 
   private tokenExtractor = inject(HttpXsrfTokenExtractor);
@@ -51,7 +57,7 @@ export class CustomHttpInterceptor implements HttpInterceptor {
       req = this.setParamsGET(req);
     } else if (req.method.toUpperCase() === 'POST') {
       if (req.body instanceof FormData) {
-        req =  this.setFormDataBodyPOST(req);
+        req = this.setFormDataBodyPOST(req);
       } else {
         req = this.setBodyPOST(req);
       }
@@ -62,7 +68,7 @@ export class CustomHttpInterceptor implements HttpInterceptor {
 
   private setParamsGET(req: HttpRequest<any>): HttpRequest<any> {
     return req.clone({
-      params: req.params.set('companyCode', String(sessionStorage.getItem('companyCode')))
+      params: req.params.set('companyCode', String(sessionStorage.getItem('companyCode'))),
     });
   }
 
@@ -77,7 +83,11 @@ export class CustomHttpInterceptor implements HttpInterceptor {
     }
 
     return req.clone({
-      body: { ...req.body, companyCode: String(sessionStorage.getItem('companyCode')), clientAppUrl: window.location.href }
+      body: {
+        ...req.body,
+        companyCode: String(sessionStorage.getItem('companyCode')),
+        clientAppUrl: window.location.href,
+      },
     });
   }
 
@@ -93,5 +103,4 @@ export class CustomHttpInterceptor implements HttpInterceptor {
 
     return req;
   }
-
 }

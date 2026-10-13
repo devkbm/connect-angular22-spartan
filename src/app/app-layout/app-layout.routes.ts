@@ -4,9 +4,16 @@ import { AppLayout } from './app-layout';
 
 export const routes: Routes = [
   {
-    path: '', component: AppLayout/*, canActivateChild: [AuthGuardService]*/,
+    path: '',
+    component: AppLayout /*, canActivateChild: [AuthGuardService]*/,
     children: [
-      {path: 'edit',             loadComponent: () => import('./user-profile/user-profile-form.component').then(m => m.UserProfileFormComponent)}
-    ]
-  }
+      {
+        path: 'edit',
+        loadComponent: () =>
+          import('./user-profile/user-profile-form.component').then(
+            (m) => m.UserProfileFormComponent,
+          ),
+      },
+    ],
+  },
 ];

@@ -7,20 +7,20 @@ export interface ResponseSpringslice<T> {
       empty: boolean;
       sorted: boolean;
       unsorted: boolean;
-    }
+    };
     offset: number;
     paged: boolean;
     unpaged: boolean;
-  }
+  };
   size: number;
   number: number;
   sort: {
     empty: boolean;
     sorted: boolean;
     unsorted: boolean;
-  }
+  };
   first: boolean;
   last: boolean;
-  numberOfElements: number
+  numberOfElements: number;
   empty: boolean;
 }

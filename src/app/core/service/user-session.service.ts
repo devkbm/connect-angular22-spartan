@@ -10,22 +10,21 @@ import { DataService } from './data.service';
 
 export interface SystemUserProfile {
   companyCode: string;
-	userId: string;
-	staffNo: string;
-	staffName: string;
-	deptCode: string;
-	deptName: string;
-	mobileNum: string;
-	email: string;
-  session : {
+  userId: string;
+  staffNo: string;
+  staffName: string;
+  deptCode: string;
+  deptName: string;
+  mobileNum: string;
+  email: string;
+  session: {
     ipAddress: string;
     lastAccessedTime: string;
-  }
+  };
 }
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserSessionService extends DataService {
   private IMAGE_URI = '/api/system/user/image';
@@ -42,8 +41,8 @@ export class UserSessionService extends DataService {
     //return this.IMAGE_URI + sessionStorage.getItem('imageUrl');
 
     let urlParams = new URLSearchParams();
-    urlParams.set("companyCode", sessionStorage.getItem("companyCode")!);
-    urlParams.set("userId", sessionStorage.getItem("userId")!);
+    urlParams.set('companyCode', sessionStorage.getItem('companyCode')!);
+    urlParams.set('userId', sessionStorage.getItem('userId')!);
     return this.IMAGE_URI + '?' + urlParams;
   }
 
@@ -51,9 +50,8 @@ export class UserSessionService extends DataService {
     const url = `${this.API_URL}/my-profile`;
     const options = getHttpOptions();
 
-    return this.http
-      .get<ResponseObject<SystemUserProfile>>(url, options).pipe(
-        //catchError((err) => Observable.throw(err))
-      );
+    return this.http.get<ResponseObject<SystemUserProfile>>(url, options).pipe(
+      //catchError((err) => Observable.throw(err))
+    );
   }
 }

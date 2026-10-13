@@ -8,7 +8,13 @@ import { HlmSelectImports } from '@spartan-ng/helm/select';
 
 @Component({
   selector: 'company-search',
-  imports: [HlmSelectImports, HlmInputImports, HlmFieldImports, HlmButtonGroupImports, HlmButtonImports],
+  imports: [
+    HlmSelectImports,
+    HlmInputImports,
+    HlmFieldImports,
+    HlmButtonGroupImports,
+    HlmButtonImports,
+  ],
   template: `
     <!--
     <hlm-select [itemToString]="itemToString" [(value)]="menuGroupInfo().selectedId">
@@ -25,17 +31,16 @@ import { HlmSelectImports } from '@spartan-ng/helm/select';
     </hlm-select>
 -->
     <hlm-field>
-			<label hlmFieldLabel for="input-button-group">Search</label>
-			<hlm-button-group>
-				<input hlmInput id="input-button-group" placeholder="Type to search..." />
-				<button hlmBtn variant="outline">Search</button>
-			</hlm-button-group>
-		</hlm-field>
+      <label hlmFieldLabel for="input-button-group">Search</label>
+      <hlm-button-group>
+        <input hlmInput id="input-button-group" placeholder="Type to search..." />
+        <button hlmBtn variant="outline">Search</button>
+      </hlm-button-group>
+    </hlm-field>
   `,
   styles: ``,
 })
 export default class CompanySearch {
-
   /*
   public readonly itemToString = (value: string) => this.query.company.list.find((item) => item.value === value)?.label || '';
 
@@ -51,9 +56,4 @@ export default class CompanySearch {
     }
   }
   */
-
-
-
-
-
 }

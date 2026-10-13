@@ -1,3 +1,3 @@
 export class AppError {
-    constructor(public error: Response) { }
+  constructor(public error: Response) {}
 }

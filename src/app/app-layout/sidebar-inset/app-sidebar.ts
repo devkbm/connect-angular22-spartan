@@ -11,41 +11,45 @@ import { NavMain } from './nav-main';
 import { NavProjects } from './nav-projects';
 import { NavSecondary } from './nav-secondary';
 import { NavUser } from './nav-user';
-import { NavMenu } from "./nav-menu";
+import { NavMenu } from './nav-menu';
 import { Router } from '@angular/router';
 
-
 @Component({
-	selector: 'spartan-app-sidebar-inset',
-	imports: [
-    HlmSidebarImports, NgIcon, NavMain, NavProjects, NavUser, NavSecondary, NavMenu,
-    HlmSelectImports
+  selector: 'spartan-app-sidebar-inset',
+  imports: [
+    HlmSidebarImports,
+    NgIcon,
+    NavMain,
+    NavProjects,
+    NavUser,
+    NavSecondary,
+    NavMenu,
+    HlmSelectImports,
   ],
-	providers: [provideIcons({ lucideCommand })],
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	template: `
-		<div hlmSidebarWrapper>
-			<hlm-sidebar variant="inset">
-				<hlm-sidebar-header>
-					<ul hlmSidebarMenu>
-						<li hlmSidebarMenuItem>
-							<a hlmSidebarMenuButton size="lg" href="#">
-								<div
-									class="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg"
-								>
-									<ng-icon name="lucideCommand" class="text-base" />
-								</div>
-								<div class="grid flex-1 text-left text-sm leading-tight">
-									<span class="truncate font-medium">Acme Inc</span>
-									<span class="truncate text-xs">Enterprise</span>
-								</div>
-							</a>
-						</li>
-					</ul>
-				</hlm-sidebar-header>
+  providers: [provideIcons({ lucideCommand })],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <div hlmSidebarWrapper>
+      <hlm-sidebar variant="inset">
+        <hlm-sidebar-header>
+          <ul hlmSidebarMenu>
+            <li hlmSidebarMenuItem>
+              <a hlmSidebarMenuButton size="lg" href="#">
+                <div
+                  class="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg"
+                >
+                  <ng-icon name="lucideCommand" class="text-base" />
+                </div>
+                <div class="grid flex-1 text-left text-sm leading-tight">
+                  <span class="truncate font-medium">Acme Inc</span>
+                  <span class="truncate text-xs">Enterprise</span>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </hlm-sidebar-header>
 
-
-				<hlm-sidebar-content>
+        <hlm-sidebar-content>
           <!--
           <hlm-combobox [(value)]="menuGroupInfo().selectedId" (valueChange)="moveToMenuGroupUrl($event)">
             <hlm-combobox-input placeholder="Select a framework" />
@@ -60,67 +64,76 @@ import { Router } from '@angular/router';
           </hlm-combobox>
           -->
 
-          <hlm-select #menuGroup [itemToString]="itemToString" [(value)]="menuGroupInfo().selectedId" (valueChange)="moveToMenuGroupUrl($event)">
+          <hlm-select
+            #menuGroup
+            [itemToString]="itemToString"
+            [(value)]="menuGroupInfo().selectedId"
+            (valueChange)="moveToMenuGroupUrl($event)"
+          >
             <hlm-select-trigger class="w-56">
               <hlm-select-value placeholder="Select a fruit" />
             </hlm-select-trigger>
             <hlm-select-content *hlmSelectPortal>
               <hlm-select-group>
                 @for (item of menuGroupInfo().list; track item.menuGroupCode) {
-                  <hlm-select-item [value]="item.menuGroupCode">{{ item.menuGroupName }}</hlm-select-item>
+                  <hlm-select-item [value]="item.menuGroupCode">{{
+                    item.menuGroupName
+                  }}</hlm-select-item>
                 }
               </hlm-select-group>
             </hlm-select-content>
           </hlm-select>
 
-					<!--<spartan-nav-main [items]="data.navMain" />-->
+          <!--<spartan-nav-main [items]="data.navMain" />-->
           <spartan-nav-menu [menuGroupCode]="menuGroupInfo().selectedId" />
 
           <!--
 					<spartan-nav-projects [projects]="data.projects" />
 					<spartan-nav-secondary class="mt-auto" [items]="data.navSecondary" />
               -->
-				</hlm-sidebar-content>
+        </hlm-sidebar-content>
 
-				<hlm-sidebar-footer>
-					<spartan-nav-user [user]="data.user" />
-				</hlm-sidebar-footer>
-
-			</hlm-sidebar>
-			<ng-content />
-		</div>
-	`,
+        <hlm-sidebar-footer>
+          <spartan-nav-user [user]="data.user" />
+        </hlm-sidebar-footer>
+      </hlm-sidebar>
+      <ng-content />
+    </div>
+  `,
 })
 export class AppSidebarInset {
-
   private router = inject(Router);
 
-	public readonly data = data;
+  public readonly data = data;
 
-  public readonly itemToString = (value: string) => this.menuGroupInfo().list.find((item) => item.menuGroupCode === value)?.menuGroupName || '';
+  public readonly itemToString = (value: string) =>
+    this.menuGroupInfo().list.find((item) => item.menuGroupCode === value)?.menuGroupName || '';
 
-  menuGroupInfo = signal<{list: {menuGroupCode: string, menuGroupName: string, menuGroupUrl: string}[], selectedId: string}>({
+  menuGroupInfo = signal<{
+    list: { menuGroupCode: string; menuGroupName: string; menuGroupUrl: string }[];
+    selectedId: string;
+  }>({
     list: [],
-    selectedId: ''
-  })
-
+    selectedId: '',
+  });
 
   constructor() {
-
     const stringMenuGroupList = sessionStorage.getItem('menuGroupList') as string;
-    this.menuGroupInfo.update(current => ({...current, list: JSON.parse(stringMenuGroupList)}));
+    this.menuGroupInfo.update((current) => ({ ...current, list: JSON.parse(stringMenuGroupList) }));
 
     /**
      * 1. 최종 메뉴 그룹을 선택(세션)
      * 2. 세션 정보 없을 경우 첫번쩨 메뉴 그룹 선택
      */
-    const sessionMenuGroup  = sessionStorage.getItem('selectedMenuGroup');
+    const sessionMenuGroup = sessionStorage.getItem('selectedMenuGroup');
     if (sessionMenuGroup) {
-      this.menuGroupInfo.update(current => ({...current, selectedId: sessionMenuGroup}));
+      this.menuGroupInfo.update((current) => ({ ...current, selectedId: sessionMenuGroup }));
     } else {
-      this.menuGroupInfo.update(current => ({...current, selectedId: this.menuGroupInfo().list[0].menuGroupCode}));
+      this.menuGroupInfo.update((current) => ({
+        ...current,
+        selectedId: this.menuGroupInfo().list[0].menuGroupCode,
+      }));
     }
-
   }
 
   moveToMenuGroupUrl(menuGroupCode: any) {
@@ -132,6 +145,4 @@ export class AppSidebarInset {
       }
     }
   }
-
-
 }

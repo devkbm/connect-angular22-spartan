@@ -1,7 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 
 import { catchError, of, switchMap } from 'rxjs';
 
@@ -10,20 +16,13 @@ import { GlobalProperty } from '@src/app/core/global-property';
 import { getHttpOptions } from '@src/app/core/http/http-utils';
 import { SessionManager } from '@src/app/core/session-manager';
 
-//import { HlmFormFieldImports } from '@spartan-ng/helm/form-field';
+//import { HlmFieldImports } from '@spartan-ng/helm/field';
 import { HlmFieldImports } from '@spartan-ng/helm/field';
 import { HlmInputImports } from '@spartan-ng/helm/input';
 
-
 @Component({
   selector: 'app-user-profile-form',
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HlmFieldImports,
-    HlmInputImports
-],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, HlmFieldImports, HlmInputImports],
   template: `
     <form [formGroup]="fg" class="space-y-6">
       <!-- 폼 오류 메시지 템플릿 -->
@@ -36,44 +35,44 @@ import { HlmInputImports } from '@spartan-ng/helm/input';
         }
       </ng-template>
 
-      {{this.fg.value |json}} - {{this.fg.errors | json}}
+      {{ this.fg.value | json }} - {{ this.fg.errors | json }}
 
       <div hlmField data-invalid="true">
         <label hlmFieldLabel for="userId">사용자ID</label>
         <input class="w-50" hlmInput id="userId" formControlName="userId" required />
         <p hlmFieldDescription>사용자 아이디를 확인해주세요.</p>
-        <!--<hlm-error>필수 입력 값입니다.</hlm-error>-->
+        <!--<hlm-field-error>필수 입력 값입니다.</hlm-field-error>-->
         <!--<p HlmFieldError>필수 입력 값입니다.</p>-->
       </div>
 
       <!--
-      <hlm-form-field>
+      <hlm-field>
         사용자ID
         <input class="w-50" hlmInput id="userId" formControlName="userId" required />
-        <hlm-hint>사용자 아이디를 확인해주세요.</hlm-hint>
-        <hlm-error>필수 입력 값입니다.</hlm-error>
-      </hlm-form-field>
+        <p hlmFieldDescription>사용자 아이디를 확인해주세요.</p>
+        <hlm-field-error>필수 입력 값입니다.</hlm-field-error>
+      </hlm-field>
 
-      <hlm-form-field>
+      <hlm-field>
         기존 비밀번호
         <input class="w-50" hlmInput id="beforePassword" formControlName="beforePassword" required />
-        <hlm-hint>기존 비밀번호를 입력해주세요.</hlm-hint>
-        <hlm-error>필수 입력 값입니다.</hlm-error>
-      </hlm-form-field>
+        <p hlmFieldDescription>기존 비밀번호를 입력해주세요.</p>
+        <hlm-field-error>필수 입력 값입니다.</hlm-field-error>
+      </hlm-field>
 
-      <hlm-form-field>
+      <hlm-field>
         변경 비밀번호
         <input class="w-50" hlmInput id="afterPassword" formControlName="afterPassword" required />
-        <hlm-hint>변경 비밀번호를 입력해주세요.</hlm-hint>
-        <hlm-error>필수 입력 값입니다.</hlm-error>
-      </hlm-form-field>
+        <p hlmFieldDescription>변경 비밀번호를 입력해주세요.</p>
+        <hlm-field-error>필수 입력 값입니다.</hlm-field-error>
+      </hlm-field>
 
-      <hlm-form-field>
+      <hlm-field>
         변경 비밀번호 확인
         <input class="w-50" hlmInput id="afterPasswordConfirm" formControlName="afterPasswordConfirm" required />
-        <hlm-hint>변경 비밀번호를 한번 더 입력해주세요.</hlm-hint>
-        <hlm-error>필수 입력 값입니다. </hlm-error>
-      </hlm-form-field>
+        <p hlmFieldDescription>변경 비밀번호를 한번 더 입력해주세요.</p>
+        <hlm-field-error>필수 입력 값입니다. </hlm-field-error>
+      </hlm-field>
       -->
 
       <!--
@@ -113,17 +112,19 @@ import { HlmInputImports } from '@spartan-ng/helm/input';
       <span nz-icon nzType="save" nzTheme="outline"></span>변경
     </button>
       -->
-  `
+    </form>
+  `,
 })
 export class UserProfileFormComponent {
-
   private http = inject(HttpClient);
 
   fg = inject(FormBuilder).group({
-    userId          : new FormControl<string | null>(null, { validators: [Validators.required] }),
-    beforePassword  : new FormControl<string | null>(null, { validators: [Validators.required] }),
-    afterPassword   : new FormControl<string | null>(null, { validators: [Validators.required] }),
-    afterPasswordConfirm : new FormControl<string | null>(null, { validators: [Validators.required] }),
+    userId: new FormControl<string | null>(null, { validators: [Validators.required] }),
+    beforePassword: new FormControl<string | null>(null, { validators: [Validators.required] }),
+    afterPassword: new FormControl<string | null>(null, { validators: [Validators.required] }),
+    afterPasswordConfirm: new FormControl<string | null>(null, {
+      validators: [Validators.required],
+    }),
   });
 
   constructor() {
@@ -132,7 +133,7 @@ export class UserProfileFormComponent {
 
   passwordChange() {
     if (this.fg.invalid) {
-      Object.values(this.fg.controls).forEach(control => {
+      Object.values(this.fg.controls).forEach((control) => {
         if (control.invalid) {
           control.markAsDirty();
           control.updateValueAndValidity({ onlySelf: true });
@@ -144,19 +145,19 @@ export class UserProfileFormComponent {
     const val = {
       userId: this.fg.controls.userId.value,
       beforePassword: this.fg.controls.beforePassword.value,
-      afterPassword: this.fg.controls.afterPassword.value
-    }
+      afterPassword: this.fg.controls.afterPassword.value,
+    };
 
-    const url =  GlobalProperty.serverUrl() + `/api/system/user/${this.fg.controls.userId.value}/changepassword`;
+    const url =
+      GlobalProperty.serverUrl() +
+      `/api/system/user/${this.fg.controls.userId.value}/changepassword`;
     const options = getHttpOptions();
 
-    this.http.post<ResponseObject<boolean>>(url, val, options).pipe(
-          //catchError(this.handleError<ResponseObject<BizCode>>('save', undefined))
-        )
-        .subscribe(
-          (model: ResponseObject<boolean>) => {
-
-          }
-        )
+    this.http
+      .post<ResponseObject<boolean>>(url, val, options)
+      .pipe(
+        //catchError(this.handleError<ResponseObject<BizCode>>('save', undefined))
+      )
+      .subscribe((model: ResponseObject<boolean>) => {});
   }
 }

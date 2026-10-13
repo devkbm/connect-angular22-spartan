@@ -4,7 +4,7 @@ export interface MenuBreadCrumb {
   name: string;
   isLink: boolean;
   url?: string;
-  marked?: boolean
+  marked?: boolean;
 }
 
 export interface MenuGroup {
@@ -36,11 +36,10 @@ export interface UserToken {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SessionManager {
-
-  constructor() { }
+  constructor() {}
 
   static saveSessionStorage(data: UserToken) {
     sessionStorage.setItem('token', data.sessionId);
@@ -95,7 +94,7 @@ export class SessionManager {
     */
 
     const menuGroupList = JSON.parse(sessionStorage.getItem('menuGroupList') as string);
-    const sessionMenuGroup    = sessionStorage.getItem('selectedMenuGroup') as string;
+    const sessionMenuGroup = sessionStorage.getItem('selectedMenuGroup') as string;
     let menuGroupUrl = '';
     for (const menuGroup of menuGroupList) {
       if (menuGroup.menuGroupCode === sessionMenuGroup) {
@@ -108,27 +107,32 @@ export class SessionManager {
     // 현재 화면에 해당하는 메뉴 탐색
     let find = (children: any[]): boolean => {
       for (const child of children) {
-        names.push({name: child.title, isLink: child.menuType === 'ITEM' ? true : false, url: child.url, marked: false});
+        names.push({
+          name: child.title,
+          isLink: child.menuType === 'ITEM' ? true : false,
+          url: child.url,
+          marked: false,
+        });
         if (child.leaf) {
           if (window.location.pathname === '/' + menuGroupUrl + '/' + child.url) {
-            names[names.length-1].marked = true;
+            names[names.length - 1].marked = true;
             return true;
           } else {
-            names.pop();  // Leaf 노드중 일치하지 않은 메뉴 제거
+            names.pop(); // Leaf 노드중 일치하지 않은 메뉴 제거
           }
         } else if (child.children) {
           find(child.children);
-          if (names[names.length-1].marked !== true) { // Leaf 노드 중 marked 되지 않은 노드 제거
+          if (names[names.length - 1].marked !== true) {
+            // Leaf 노드 중 marked 되지 않은 노드 제거
             names.pop();
           }
         }
       }
       return false;
-    }
+    };
     find(obj);
 
     //console.log(names);
     return names;
   }
-
 }

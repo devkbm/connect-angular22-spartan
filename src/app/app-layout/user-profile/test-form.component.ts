@@ -5,6 +5,6 @@ import { CommonModule } from '@angular/common';
   selector: 'app-test-form',
   standalone: true,
   imports: [CommonModule],
-  template: `test`
+  template: `test`,
 })
 export class TestFormComponent {}

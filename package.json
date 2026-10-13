@@ -9,7 +9,7 @@
     "test": "ng test"
   },
   "private": true,
-  "packageManager": "pnpm@11.18.0",
+  "packageManager": "pnpm@12.11.2",
   "dependencies": {
     "@angular/cdk": "22.2.1",
     "@angular/common": "^22.2.1",
@@ -21,7 +21,7 @@
     "@ng-icons/core": "^32.5.0",
     "@ng-icons/lucide": "^32.2.0",
     "@ng-icons/remixicon": "^34.0.0",
-    "@spartan-ng/brain": "^1.5.0",
+    "@spartan-ng/brain": "^1.6.3",
     "@tanstack/angular-table": "^9.2.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -36,7 +36,7 @@
     "@angular/build": "^22.2.1",
     "@angular/cli": "^22.2.1",
     "@angular/compiler-cli": "^22.2.1",
-    "@spartan-ng/cli": "^1.5.0",
+    "@spartan-ng/cli": "^1.6.3",
     "@tailwindcss/postcss": "^4.1.12",
     "jsdom": "^28.0.0",
     "postcss": "^8.5.3",

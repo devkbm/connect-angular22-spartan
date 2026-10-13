@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DataTablePreview } from './example';
+import { DataTablePreview } from './company-grid';
 import CompanySearch from './company-search';
 
 @Component({
@@ -8,11 +8,11 @@ import CompanySearch from './company-search';
   standalone: true,
   imports: [CommonModule, DataTablePreview, CompanySearch],
   template: `
-  Company
+    Company
 
-  <company-search></company-search>
+    <company-search></company-search>
 
-  <spartan-data-table-preview></spartan-data-table-preview>
-  `
+    <spartan-data-table-preview></spartan-data-table-preview>
+  `,
 })
 export default class CompanyComponent {}

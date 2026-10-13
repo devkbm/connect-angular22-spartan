@@ -1,4 +1,6 @@
 {
+  "tailwindCSS.classFunctions": ["hlm", "cva", "classes"],
+
   // 1. Enable/Disable the extension
   "angular.enable": true,
 

@@ -8,7 +8,6 @@ import { catchError, of, switchMap } from 'rxjs';
 //import { SystemUserProfile, UserSessionService } from '@src/app/core/service/user-session.service';
 import { ResponseObject } from '@src/app/core/model/response-object';
 
-import { BrnSeparator } from '@spartan-ng/brain/separator';
 import { HlmSeparator } from '@spartan-ng/helm/separator';
 
 //import { HlmIcon } from '@spartan-ng/helm/icon';
@@ -45,7 +44,7 @@ import { SystemUserProfile, UserSessionService } from '@src/app/core/service/use
   imports: [
     CommonModule,
     HlmSeparator,
-    BrnSeparator,
+
     NgIcon,
     //HlmIcon,
     /*
@@ -63,18 +62,17 @@ import { SystemUserProfile, UserSessionService } from '@src/app/core/service/use
       <div hlmCardHeader>
         <h3 hlmCardTitle>Card Title</h3>
         <p hlmCardDescription>Card Description</p>
-            <div hlmCardAction></div>
+        <div hlmCardAction></div>
       </div>
       <p hlmCardContent>Card Content</p>
 
-       <brn-separator hlmSeparator class="my-4" />
-
-      <div hlmCardFooter class="flex h-5 items-center space-x-4 text-sm" >
-          <ng-icon hlm name="lucideSettings"/>
-          <brn-separator decorative hlmSeparator orientation="vertical" />
-          <ng-icon hlm name="lucidePenLine" (click)="test2()"/>
-          <brn-separator decorative hlmSeparator orientation="vertical" />
-          <ng-icon hlm name="lucideLogOut" (click)="logout()"/>
+      <hlm-separator class="my-4" />
+      <div hlmCardFooter class="flex h-5 items-center space-x-4 text-sm">
+        <ng-icon hlm name="lucideSettings" />
+        <hlm-separator decorative orientation="vertical" />
+        <ng-icon hlm name="lucidePenLine" (click)="test2()" />
+        <hlm-separator decorative orientation="vertical" />
+        <ng-icon hlm name="lucideLogOut" (click)="logout()" />
       </div>
     </section>
 
@@ -122,24 +120,29 @@ import { SystemUserProfile, UserSessionService } from '@src/app/core/service/use
     </div>
 -->
   `,
-  styles: [`
-    .card {
-      //width: 300px;
-      //height: 147px;
-      height: calc(100% - 22px);
-      background-color: green;
-      border: 1px solid rgb(232, 232, 232);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-      transition: all 0.3s cubic-bezier(.25,.8,.25,1);
-    }
+  styles: [
+    `
+      .card {
+        //width: 300px;
+        //height: 147px;
+        height: calc(100% - 22px);
+        background-color: green;
+        border: 1px solid rgb(232, 232, 232);
+        box-shadow:
+          0 1px 3px rgba(0, 0, 0, 0.12),
+          0 1px 2px rgba(0, 0, 0, 0.24);
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      }
 
-    .card:hover {
-      box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-    }
-  `]
+      .card:hover {
+        box-shadow:
+          0 14px 28px rgba(0, 0, 0, 0.25),
+          0 10px 10px rgba(0, 0, 0, 0.22);
+      }
+    `,
+  ],
 })
 export default class UserProfileComponent {
-
   profilePictureSrc: any;
   profile?: SystemUserProfile;
 
@@ -154,13 +157,9 @@ export default class UserProfileComponent {
   }
 
   getMyInfo(): void {
-    this.sessionService
-        .getMyProfile()
-        .subscribe(
-            (model: ResponseObject<SystemUserProfile>) => {
-              this.profile = model.data;
-            }
-        );
+    this.sessionService.getMyProfile().subscribe((model: ResponseObject<SystemUserProfile>) => {
+      this.profile = model.data;
+    });
   }
 
   logoutConfirm() {
@@ -183,20 +182,24 @@ export default class UserProfileComponent {
     const url2 = GlobalProperty.serverUrl() + `/api/system/user/logout`;
     const options = getHttpOptions();
 
-    this.http.get<any>(url1, options).pipe(
-      switchMap(res => {
-        //console.log(res.authenticated);
-        if (res.authenticated) {
-          return this.http.get<ResponseList<boolean>>(url2, options);
-        } else {
+    this.http
+      .get<any>(url1, options)
+      .pipe(
+        switchMap((res) => {
+          //console.log(res.authenticated);
+          if (res.authenticated) {
+            return this.http.get<ResponseList<boolean>>(url2, options);
+          } else {
+            return of(false);
+          }
+        }),
+        catchError((err) => {
           return of(false);
-        }
-      }),
-      catchError((err) => { return of(false) })
-    )
-    .subscribe(logout => {
-      this.router.navigate(['/login']);
-    });
+        }),
+      )
+      .subscribe((logout) => {
+        this.router.navigate(['/login']);
+      });
   }
 
   test2(): void {
@@ -205,6 +208,4 @@ export default class UserProfileComponent {
 
     this.router.navigate(['/profile/edit']);
   }
-
 }
-

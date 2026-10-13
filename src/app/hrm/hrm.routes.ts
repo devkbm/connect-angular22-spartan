@@ -6,7 +6,8 @@ import { AppLayout } from '../app-layout/app-layout';
 
 export const routes: Routes = [
   {
-    path: '', component: AppLayout, //canActivateChild: [AuthGuardService],
+    path: '',
+    component: AppLayout, //canActivateChild: [AuthGuardService],
     children: [
       //{path: 'company',       loadComponent: () => import('./company/company.component')},
       /*{path: 'user',          loadComponent: () => import('./user/app-user'), data: {breadcrumb: 'user'}},
@@ -20,6 +21,6 @@ export const routes: Routes = [
       {path: 'holiday',       loadComponent: () => import('./holiday/app-holiday')},
       {path: 'bizcode',       loadComponent: () => import('./biz-code/app-biz-code')}
       */
-    ]
-  }
+    ],
+  },
 ];

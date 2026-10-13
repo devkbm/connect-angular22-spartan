@@ -1,12 +1,17 @@
 import { inject } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams, HttpXsrfTokenExtractor } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+  HttpParams,
+  HttpXsrfTokenExtractor,
+} from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { GlobalProperty } from '@src/app/core/global-property';
 import { UnauthorizedError } from '../error/unauthorized-error';
 
 export class DataService {
-
-  protected responseMap =  (res: Response) => res;
+  protected responseMap = (res: Response) => res;
   protected serverUrl;
   protected API_URL;
 
@@ -25,9 +30,11 @@ export class DataService {
   protected getHttpHeaders(): HttpHeaders {
     const token = this.tokenExtractor.getToken() as string;
 
-    return new HttpHeaders()
+    return (
+      new HttpHeaders()
         //.set('X-XSRF-TOKEN', token)
-        .set('Content-Type', 'application/json');
+        .set('Content-Type', 'application/json')
+    );
   }
 
   /**
@@ -39,32 +46,34 @@ export class DataService {
 
     const token = sessionStorage.getItem('token') as string;
 
-    return new HttpHeaders()
+    return (
+      new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('X-Requested-With', 'XMLHttpRequest')
         //.set('X-XSRF-TOKEN', token)
         .set('Authorization', token)
-        .set('x-auth-token', token);
+        .set('x-auth-token', token)
+    );
   }
 
   protected getAuthorizedMultiPartHeaders(): HttpHeaders {
     const token = sessionStorage.getItem('token') as string;
 
     const headers = new HttpHeaders()
-    //.set('Content-Type', 'multipart/form-data')
-    .set('Accept', 'application/json')
-    .set('Authorization', token)
-    .set('X-Auth-Token', token);
+      //.set('Content-Type', 'multipart/form-data')
+      .set('Accept', 'application/json')
+      .set('Authorization', token)
+      .set('X-Auth-Token', token);
 
     headers.delete('Content-Type');
 
-    return  headers;
+    return headers;
   }
 
   protected getAuthorizedHeaders(): Headers {
     const token = sessionStorage.getItem('token') as string;
 
-    return new Headers({'X-Auth-Token': token});
+    return new Headers({ 'X-Auth-Token': token });
   }
 
   /**
@@ -74,8 +83,7 @@ export class DataService {
    * @param result - 기본값으로 반환할 객체
    */
   protected handleError<T>(operation = 'operation', result?: T) {
-      return (error: HttpErrorResponse): Observable<T> => {
-
+    return (error: HttpErrorResponse): Observable<T> => {
       // TODO: 리모트 서버로 에러 메시지 보내기
       // console.error(error); // 지금은 콘솔에 로그를 출력합니다.
 
@@ -92,6 +100,6 @@ export class DataService {
 
       // 애플리케이션 로직이 끊기지 않도록 기본값으로 받은 객체를 반환합니다.
       return of(result as T);
-      };
+    };
   }
 }
